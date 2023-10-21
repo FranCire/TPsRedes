@@ -1,6 +1,15 @@
 from math import radians, sin, cos, sqrt, atan2
+import sys
+sys.path.append('TP2')
+import save_and_load
 
-def calculate_distance(lat1, lon1, lat2, lon2):
+def calculate_distance_between_ips(ip1, ip2):
+    coordinates_by_ip = save_and_load.read_object_from_file("coordinates_by_ip.txt")
+    lat1, lon1 = coordinates_by_ip[ip1]
+    lat2, lon2 = coordinates_by_ip[ip2]
+    return calculate_distance_between_coordinates(lat1, lon1, lat2, lon2)
+
+def calculate_distance_between_coordinates(lat1, lon1, lat2, lon2):
     # Convert latitude and longitude from degrees to radians
     lat1, lon1, lat2, lon2 = map(radians, [lat1, lon1, lat2, lon2])
 
@@ -16,3 +25,4 @@ def calculate_distance(lat1, lon1, lat2, lon2):
 
     # print(distance)
     return distance
+    
