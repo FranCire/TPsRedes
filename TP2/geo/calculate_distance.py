@@ -1,11 +1,12 @@
 from math import radians, sin, cos, sqrt, atan2
-import requests
-
-IPSTACK_ACCESS_KEY = None
+import sys
+sys.path.append('TP2')
+import save_and_load
 
 def calculate_distance_between_ips(ip1, ip2):
-    lat1, lon1 = get_coordinates_from_ip(ip1)
-    lat2, lon2 = get_coordinates_from_ip(ip2)
+    coordinates_by_ip = save_and_load.read_object_from_file("coordinates_by_ip.txt")
+    lat1, lon1 = coordinates_by_ip[ip1]
+    lat2, lon2 = coordinates_by_ip[ip2]
     return calculate_distance_between_coordinates(lat1, lon1, lat2, lon2)
 
 def calculate_distance_between_coordinates(lat1, lon1, lat2, lon2):
@@ -24,11 +25,4 @@ def calculate_distance_between_coordinates(lat1, lon1, lat2, lon2):
 
     # print(distance)
     return distance
-
-def get_coordinates_from_ip(ip):
-    if IPSTACK_ACCESS_KEY == None:
-        raise Exception("IP Stack API access key not set")
-    request_url = f"http://api.ipstack.com/{ip}?access_key={IPSTACK_ACCESS_KEY}"
-    response_json = requests.get(request_url).json()
-    return response_json["latitude"], response_json["longitude"]
     
