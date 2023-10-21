@@ -17,17 +17,20 @@ def tau(n):
     tau = (t_alpha * (n-1))/(sqrt(n) * sqrt(n-2 + t_alpha * t_alpha))
     return tau
 
-'''
-def graph_standardized(sample):
+
+def graph_standardized(sample,filename,title):
     xs = list(range(len(sample)))
     mean_val = mean(sample)
     std_val = std(sample)
-    ys = [(x - mean_val)/std_val for x in sample]
-    plt.plot(xs,ys)
-    plt.savefig("xd.png")
+    ys = [abs(x - mean_val)/std_val for x in sample]
+    plt.scatter(xs,ys)
+    plt.ylabel("Distancia a la media normalizada")
+    plt.axhline(y=tau(len(sample)),linestyle='-')
+    plt.title(title)
+    plt.savefig(f"{filename}.png")
     plt.close()
 
-'''
+
 def find_outliers(sample):
     sample_pair = [(x,i) for i,x in enumerate(sample)]
     filtered = []
@@ -49,21 +52,27 @@ if __name__ == "__main__":
     rtt_between_jumps = read_object_from_file("/home/fcirelli/Documents/UBA/Redes/TPs/TP2/rtt_between_jumps_cam.ac.uk.txt")
     outliers = find_outliers([jump[4] for jump in rtt_between_jumps])
     outlier_jumps = [rtt_between_jumps[i] for i in outliers]
-    write_object_to_file(outlier_jumps,"cambridge_outliers.txt")
+    write_object_to_file(outlier_jumps,"data/cambridge_outliers.txt")
+    graph_standardized([jump[4] for jump in rtt_between_jumps],"data/standardized_cambridge","Sample Estandarizada Cambridge")
+
 
     rtt_between_jumps = read_object_from_file("/home/fcirelli/Documents/UBA/Redes/TPs/TP2/rtt_between_jumps_jhu.edu.txt")
     outliers = find_outliers([jump[4] for jump in rtt_between_jumps])
     outlier_jumps = [rtt_between_jumps[i] for i in outliers]
-    write_object_to_file(outlier_jumps,"jhu_outliers.txt")
+    write_object_to_file(outlier_jumps,"data/jhu_outliers.txt")
+    graph_standardized([jump[4] for jump in rtt_between_jumps],"data/standardized_jhu","Sample Estandarizada JHU")
+
 
     rtt_between_jumps = read_object_from_file("/home/fcirelli/Documents/UBA/Redes/TPs/TP2/rtt_between_jumps_uj.ac.za.txt")
     outliers = find_outliers([jump[4] for jump in rtt_between_jumps])
     outlier_jumps = [rtt_between_jumps[i] for i in outliers]
-    write_object_to_file(outlier_jumps,"johannesburg_outliers.txt")
+    write_object_to_file(outlier_jumps,"data/johannesburg_outliers.txt")
+    graph_standardized([jump[4] for jump in rtt_between_jumps],"data/standardized_johannesburg","Sample Estandarizada Johannesburg")
+
 
     rtt_between_jumps = read_object_from_file("/home/fcirelli/Documents/UBA/Redes/TPs/TP2/rtt_between_jumps_www.u-tokyo.ac.jp.txt")
     outliers = find_outliers([jump[4] for jump in rtt_between_jumps])
     outlier_jumps = [rtt_between_jumps[i] for i in outliers]
-    write_object_to_file(outlier_jumps,"tokyo_outliers.txt")
-    #graph_standardized([jump[4] for jump in rtt_between_jumps])
+    write_object_to_file(outlier_jumps,"data/tokyo_outliers.txt")
+    graph_standardized([jump[4] for jump in rtt_between_jumps],"data/standardized_tokyo","Sample Estandarizada Tokyo")
 
