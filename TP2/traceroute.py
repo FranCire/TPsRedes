@@ -1,15 +1,8 @@
 import sys
 from scapy.all import *
 from time import *
-
-def write_object_to_file(d,filename):
-    with open(filename,"w") as file:
-        file.write(str(d))
-
-def read_object_from_file(filename):
-    with open(filename,"r") as file:
-        lines = file.readlines()
-    return eval(lines[0])
+from save_and_load import *
+from outliers import *
 
 def get_bare_traceroute(url,max_ttl,times_per_ttl):
     responses = {}
@@ -66,12 +59,13 @@ def traceroute(url):
     
     write_object_to_file(rtt_between_jumps,f"rtt_between_jumps_{url}.txt")
 
+    
+    outliers = find_outliers([jump[4] for jump in rtt_between_jumps])
+    outlier_jumps = [rtt_between_jumps[i] for i in outliers]
+    write_object_to_file(outlier_jumps,"cambridge_outliers.txt")
 
 
 
 
 if __name__ == "__main__":
-    traceroute("jhu.edu")
-    traceroute("cam.ac.uk")
-    traceroute("uj.ac.za")
-    traceroute("u-tokyo.ac.jp")
+    traceroute("www.u-tokyo.ac.jp")
