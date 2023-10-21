@@ -1,0 +1,25 @@
+{
+    "build": {
+        "dockerfile": "Dockerfile",
+        "context": ".."
+    },
+    "customizations": {
+        "vscode": {
+            "extensions": [
+                "ms-python.python"
+            ],
+            "settings": {
+				"python.defaultInterpreterPath": "/usr/local/bin/python"
+            }
+        }
+    },
+    "runArgs": [
+        "--name", "tp-redes"
+    ],
+    "remoteUser": "vscode",
+    "postCreateCommand": "pip install -r requirements.txt",
+    "mounts": [
+        // Re-use local ssh configuration
+        "source=${localEnv:HOME}/.ssh,target=/root/.ssh,type=bind,consistency=cached"
+    ]
+}
